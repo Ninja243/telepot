@@ -1161,7 +1161,8 @@ class Bot(_BotBase):
                     traceback.print_exc()
 
         def relay_to_collector(update):
-            key = _find_first_key(update, ['message',
+            try:
+                key = _find_first_key(update, ['message',
                                            'edited_message',
                                            'channel_post',
                                            'edited_channel_post',
@@ -1170,7 +1171,9 @@ class Bot(_BotBase):
                                            'chosen_inline_result',
                                            'shipping_query',
                                            'pre_checkout_query'])
-            collect_queue.put(update[key])
+                collect_queue.put(update[key])
+            except:
+                pass
             return update['update_id']
 
         def get_from_telegram_server():
